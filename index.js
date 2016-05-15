@@ -5,7 +5,41 @@ var dat = require('exdat');
 
 
 var equations = {
-	mobius: function(u, t) {
+	warp: function(u, t) {
+		// u = u - 0.5;
+
+		var x = u;
+		var y = t;
+		var z = u * t;
+		return new THREE.Vector3(x, y, z);			
+	}
+	, parabola: function(u, t) {
+		var x = t;
+		var y = Math.sqrt(t);
+		var z = 0;
+		return new THREE.Vector3(x, y, z);			
+	}
+	, whateva: function(u, t) {
+		u = u - 0.5;
+		var v = 4 * Math.PI * t;
+
+		var x = params.mobiusRadius * Math.cos(v/params.mobiusFlatness) * u;
+		var y = params.mobiusRadius * Math.sin(v/params.mobiusFlatness) * u;
+		var z = params.mobiusStripWidth * u * Math.sin(v/2);
+		return new THREE.Vector3(x, y, z);	
+
+	}
+	, whateva2: function(u, t) {
+		u = u - 0.5;
+		var v = 4 * Math.PI * t;
+
+		var x = Math.atan(v * params.mobiusFlatness) / u;
+		var y = params.mobiusRadius * Math.sin(u/t);
+		var z = params.mobiusStripWidth * u * Math.sin(v/2);
+		return new THREE.Vector3(x, y, z);	
+
+	}
+	, mobius: function(u, t) {
 		// flat mobius strip
 		// http://www.wolframalpha.com/input/?i=M%C3%B6bius+strip+parametric+equations&lk=1&a=ClashPrefs_*Surface.MoebiusStrip.SurfaceProperty.ParametricEquations-
 		
@@ -53,8 +87,8 @@ var params = {
 	mobiusRadius: 3,
 	mobiusStripWidth: 1,
 	mobiusFlatness: 0.125,
-	equation: 'mobius3d',
-	wireframe: false
+	equation: 'whateva2',
+	wireframe: true
 }
 
 var img = new Image();
@@ -93,8 +127,8 @@ var geo = new THREE.ParametricGeometry(equations[params.equation], params.slices
 // geo sphere = new THREE.SphereGeometry(1, 84, 84);
 var mat = new THREE.MeshBasicMaterial({
   map: texture,
-  side: THREE.DoubleSide
-	// wireframe: true
+  side: THREE.DoubleSide,
+	wireframe: params.wireframe
 });
 var mesh = new THREE.Mesh(geo, mat);
 
