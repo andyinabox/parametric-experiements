@@ -1,0 +1,34 @@
+{
+  "name": "parametric-experiments",
+  "version": "0.0.1",
+  "description": "Playing around with parametric equations",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "budo index.js -H localhost --live --open --css styles.css -- -t glslify",
+    "build": "budo-demo index.js -c styles.css -m -- -t glslify",
+    "deploy": "npm run build; gh-pages -d dist; npm run clean",
+    "clean": "rm -r dist"
+  },
+  "author": {
+    "name": "Andy Dayton",
+    "email": "amdayton@gmail.com",
+    "url": "http://andydayton.com/"
+  },
+  "dependencies": {
+    "exdat": "^0.6.2",
+    "three": "^0.76.1",
+    "three-orbit-viewer": "^69.3.0"
+  },
+  "devDependencies": {
+    "glslify": "~5.0.0",
+    "budo": "~7.1.0",
+    "budo-demo": "^0.1.1",
+    "gh-pages": "^0.11.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/andyinabox/parametric-experiments.git"
+  },
+  "homepage": "https://github.com/andyinabox/parametric-experiments"
+}
