@@ -47,16 +47,28 @@ var equations = {
 	}
 };
 
-
-
 var params = {
 	slices: 40,
 	stacks: 10,
 	mobiusRadius: 3,
 	mobiusStripWidth: 1,
 	mobiusFlatness: 0.125,
-	equation: 'mobius3d'
+	equation: 'mobius3d',
+	wireframe: false
 }
+
+var img = new Image();
+img.src = 'assets/map.png';
+
+var texture = new THREE.Texture()
+texture.minFilter = THREE.LinearFilter
+texture.generateMipmap = false
+texture.needsUpdate = true
+texture.image = img
+img.onload = function() {
+  texture.needsUpdate = true;
+}
+
 
 var app = createOrbitViewer({
   clearColor: 0x000000,
@@ -73,13 +85,16 @@ gui.add(params, 'mobiusFlatness', 0, 1);
 gui.add(params, 'slices', 1, 100).step(1);
 gui.add(params, 'stacks', 1, 100).step(1);
 gui.add(params, 'equation', Object.keys(equations))
+gui.add(params, 'wireframe')
 
 console.log(params.equation);
 
 var geo = new THREE.ParametricGeometry(equations[params.equation], params.slices, params.stacks);
 // geo sphere = new THREE.SphereGeometry(1, 84, 84);
 var mat = new THREE.MeshBasicMaterial({
-	wireframe: true
+  map: texture,
+  side: THREE.DoubleSide
+	// wireframe: true
 });
 var mesh = new THREE.Mesh(geo, mat);
 
@@ -89,7 +104,10 @@ app.on('tick', function(dt) {
 	var m = app.scene.children[0];
 
 	m.geometry = new THREE.ParametricGeometry(equations[params.equation], params.slices, params.stacks);
+	m.material.wireframe = params.wireframe;
 	m.needsUpdate = true;
+
+
 });
 
 },{"exdat":23,"three":35,"three-orbit-viewer":24}],2:[function(require,module,exports){
