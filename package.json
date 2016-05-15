@@ -1,11 +1,11 @@
 {
   "name": "parametric-experiments",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Playing around with parametric equations and three.js",
   "main": "index.js",
   "scripts": {
     "start": "budo index.js -H localhost --live --open --css styles.css -- -t glslify",
-    "build": "budo-demo index.js -c styles.css -m -- -t glslify",
+    "build": "budo-demo index.js -c styles.css -m -i assets -- -t glslify",
     "deploy": "npm run build; gh-pages -d dist; npm run clean",
     "clean": "rm -r dist"
   },
